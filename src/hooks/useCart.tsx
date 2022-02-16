@@ -17,18 +17,18 @@ interface CartContextData {
   addProduct: (productId: number) => Promise<void>;
   removeProduct: (productId: number) => void;
   updateProductAmount: ({ productId, amount }: UpdateProductAmount) => void;
+
 }
 
 const CartContext = createContext<CartContextData>({} as CartContextData);
 
 export function CartProvider({ children }: CartProviderProps): JSX.Element {
   const [cart, setCart] = useState<Product[]>(() => {
-    // const storagedCart = Buscar dados do localStorage
+    const storagedCart = localStorage.getItem('@RocketShoes:cart');
 
-    // if (storagedCart) {
-    //   return JSON.parse(storagedCart);
-    // }
-
+    if (storagedCart) {
+      return JSON.parse(storagedCart);
+    }
     return [];
   });
 
@@ -58,6 +58,8 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       // TODO
     }
   };
+
+
 
   return (
     <CartContext.Provider

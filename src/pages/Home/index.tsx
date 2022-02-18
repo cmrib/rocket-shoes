@@ -5,6 +5,7 @@ import { ProductList } from './styles';
 import { api } from '../../services/api';
 import { formatPrice } from '../../util/format';
 import { useCart } from '../../hooks/useCart';
+import axios from 'axios';
 
 interface Product {
   id: number;
@@ -24,28 +25,27 @@ interface CartItemsAmount {
 const Home = (): JSX.Element => {
   const [products, setProducts] = useState<ProductFormatted[]>([]);
   const { addProduct, cart } = useCart();
-
   const cartItemsAmount = cart.reduce((sumAmount, product) => {
     // TODO
     sumAmount[product.id] = product.amount
     return sumAmount
-
   }, {} as CartItemsAmount)
 
   useEffect(() => {
     async function loadProducts() {
-      // TODO
-      const request = await api.get('/products')
-      const formattedArray = request.data.map((item: ProductFormatted) => {
+      const response = await api.get('/products')
+      const formattedPrices: ProductFormatted[] = response.data.map((product: Product) => {
         return {
-          ...item,
-          priceFormatted: formatPrice(item.price)
+          ...product,
+          priceFormatted: formatPrice(product.price)
         }
       })
-      setProducts(formattedArray)
+
+      setProducts(formattedPrices)
     }
     loadProducts();
   }, []);
+
 
   function handleAddProduct(id: number) {
     // TODO
@@ -54,10 +54,9 @@ const Home = (): JSX.Element => {
 
   return (
     <ProductList>
-
-      {products.map((product) => (
+      {products.map(product => (
         <li key={product.id}>
-          <img src={product.image} alt={product.title} />
+          <img src={product.image} alt="Tênis de Caminhada Leve Confortável" />
           <strong>{product.title}</strong>
           <span>{product.priceFormatted}</span>
           <button
@@ -73,8 +72,8 @@ const Home = (): JSX.Element => {
             <span>ADICIONAR AO CARRINHO</span>
           </button>
         </li>
-      ))}
-
+      )
+      )}
     </ProductList>
   );
 };

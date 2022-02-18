@@ -31,9 +31,6 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       return JSON.parse(storagedCart);
     }
 
-    if (storagedCart) {
-      return JSON.parse(storagedCart);
-    }
     return [];
   });
 
@@ -56,8 +53,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       } else {
         const response = await api.get(`/stock/${productId}`)
         const stock = response.data.amount;
-
-        const productIndex = cart.findIndex((product) => product.id == productId);
+        const productIndex = cart.findIndex((product) => product.id === productId);
 
         if (cart[productIndex].amount <= stock) {
           const newCart = [...cart]

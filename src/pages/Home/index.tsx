@@ -5,7 +5,6 @@ import { ProductList } from './styles';
 import { api } from '../../services/api';
 import { formatPrice } from '../../util/format';
 import { useCart } from '../../hooks/useCart';
-import axios from 'axios';
 
 interface Product {
   id: number;
@@ -46,10 +45,10 @@ const Home = (): JSX.Element => {
     loadProducts();
   }, []);
 
-
   function handleAddProduct(id: number) {
     // TODO
     addProduct(id)
+
   }
 
   return (

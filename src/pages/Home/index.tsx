@@ -73,7 +73,7 @@ const Home = (): JSX.Element => {
         </li>
       )
       )}
-    </ProductList>
+    </ProductList >
   );
 };
 
